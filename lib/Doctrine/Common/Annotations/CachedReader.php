@@ -239,7 +239,7 @@ final class CachedReader implements Reader
         $parent   = $class->getParentClass();
 
         return max(array_merge(
-            [$filename ? filemtime($filename) : 0],
+            [$filename && \file_exists($filename) ? filemtime($filename) : 0],
             array_map([$this, 'getTraitLastModificationTime'], $class->getTraits()),
             array_map([$this, 'getLastModification'], $class->getInterfaces()),
             $parent ? [$this->getLastModification($parent)] : []
@@ -255,7 +255,7 @@ final class CachedReader implements Reader
         $fileName = $reflectionTrait->getFileName();
 
         return max(array_merge(
-            [$fileName ? filemtime($fileName) : 0],
+            [$fileName && \file_exists($fileName) ? filemtime($fileName) : 0],
             array_map([$this, 'getTraitLastModificationTime'], $reflectionTrait->getTraits())
         ));
     }
